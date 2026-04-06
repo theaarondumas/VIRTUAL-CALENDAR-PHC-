@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>PTO Request Calendar</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar glass">
+      <div>
+        <div class="eyebrow">PTO Request Tool</div>
+        <h1>PTO Calendar</h1>
+        <p class="muted">Tap a day or drag across multiple days. Then confirm the date range and submit it for approval.</p>
+      </div>
+
+      <section class="card">
+        <div class="section-head">
+          <h2>Employee</h2>
+          <button id="manageTeamBtn" class="ghost-btn" type="button">Edit Team</button>
+        </div>
+        <div id="techList" class="tech-list"></div>
+      </section>
+
+      <section class="card request-card">
+        <div class="section-head">
+          <h2>Request Preview</h2>
+          <button id="clearSelectionBtn" class="ghost-btn" type="button">Clear</button>
+        </div>
+        <div id="selectionSummary" class="selection-summary empty">No dates selected yet.</div>
+        <button id="submitRequestBtn" class="primary-btn full-btn" type="button" disabled>Submit for Approval</button>
+      </section>
+
+      <section class="card stat-grid">
+        <div>
+          <div class="stat-label">This Month</div>
+          <div class="stat-value" id="monthCount">0</div>
+        </div>
+        <div>
+          <div class="stat-label">Total Pending</div>
+          <div class="stat-value" id="totalCount">0</div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="section-head">
+          <h2>Tools</h2>
+        </div>
+        <div class="tool-stack">
+          <button id="todayBtn" class="secondary-btn" type="button">Go to Today</button>
+          <button id="exportBtn" class="secondary-btn" type="button">Export Data</button>
+          <label class="upload-btn">
+            Import Data
+            <input id="importInput" type="file" accept="application/json" hidden>
+          </label>
+        </div>
+      </section>
+    </aside>
+
+    <main class="main-panel">
+      <header class="topbar glass">
+        <div>
+          <div class="eyebrow">Visual Approval Calendar</div>
+          <h2 id="monthLabel">Month Year</h2>
+          <p class="muted small topbar-tip">Pending requests are shaded by employee color.</p>
+        </div>
+        <div class="nav-actions">
+          <button id="prevBtn" class="icon-btn" type="button" aria-label="Previous month">←</button>
+          <button id="nextBtn" class="icon-btn" type="button" aria-label="Next month">→</button>
+        </div>
+      </header>
+
+      <section class="calendar-wrap glass">
+        <div class="weekday-row" id="weekdayRow"></div>
+        <div class="calendar-grid" id="calendarGrid"></div>
+      </section>
+
+      <section class="legend glass">
+        <div class="section-head">
+          <h2>Team Colors</h2>
+          <span class="muted small">Pending PTO shown on calendar</span>
+        </div>
+        <div id="legendRow" class="legend-row"></div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="teamModal" class="team-modal">
+    <form method="dialog" class="modal-card">
+      <div class="section-head modal-head">
+        <h2>Manage Team</h2>
+        <button class="icon-close" value="cancel">✕</button>
+      </div>
+      <p class="muted">Add names once. Employees keep the same color on the calendar.</p>
+      <div id="teamEditor" class="team-editor"></div>
+      <div class="modal-actions">
+        <button id="addTechBtn" type="button" class="secondary-btn">Add Employee</button>
+        <button id="saveTeamBtn" type="button" class="primary-btn">Save Team</button>
+      </div>
+    </form>
+  </dialog>
+
+  <dialog id="confirmModal" class="team-modal">
+    <form method="dialog" class="modal-card confirm-card">
+      <div class="section-head modal-head">
+        <h2>Confirm PTO Request</h2>
+        <button class="icon-close" value="cancel">✕</button>
+      </div>
+      <div id="confirmBody" class="confirm-body"></div>
+      <label class="notes-field">
+        <span>Optional note</span>
+        <textarea id="requestNote" rows="3" placeholder="Vacation, family event, appointment..."></textarea>
+      </label>
+      <div class="modal-actions">
+        <button id="cancelConfirmBtn" type="button" class="secondary-btn">Back</button>
+        <button id="confirmSubmitBtn" type="button" class="primary-btn">Confirm Request</button>
+      </div>
+    </form>
+  </dialog>
+
+  <template id="dayCellTemplate">
+    <button class="day-cell" type="button">
+      <div class="day-top">
+        <span class="day-number"></span>
+        <span class="day-badge"></span>
+      </div>
+      <div class="day-events"></div>
+    </button>
+  </template>
+
+  <script src="app.js"></script>
+</body>
+</html>
